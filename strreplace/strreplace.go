@@ -1,4 +1,4 @@
-package string_replace
+package strreplace
 
 import (
 	"bytes"
