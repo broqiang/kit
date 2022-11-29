@@ -4,9 +4,9 @@ import (
 	"bytes"
 )
 
-type Option func(origin *Origin)
+type Option func(origin *Source)
 
-type Origin struct {
+type Source struct {
 	// 要处理的数据
 	Data []rune
 	// 开始的位置
@@ -19,10 +19,10 @@ type Origin struct {
 	Symbol rune
 }
 
-// NewOrigin 初始化
-func NewOrigin(s []rune, options ...Option) (origin *Origin) {
-	origin = &Origin{
-		Data:           s,
+// NewSource 初始化
+func NewSource(data []rune, options ...Option) (s *Source) {
+	s = &Source{
+		Data:           data,
 		Start:          3,
 		End:            4,
 		IsHiddenCenter: true,
@@ -30,15 +30,15 @@ func NewOrigin(s []rune, options ...Option) (origin *Origin) {
 	}
 
 	for _, option := range options {
-		option(origin)
+		option(s)
 	}
 
-	return origin
+	return s
 }
 
 // Start 截取开始的位置
 func Start(start int) Option {
-	return func(o *Origin) {
+	return func(o *Source) {
 		if start >= 0 && start <= len(o.Data) && o.IsHiddenCenter {
 			o.Start = start
 		}
@@ -47,7 +47,7 @@ func Start(start int) Option {
 
 // End 截取结束的位置
 func End(end int) Option {
-	return func(o *Origin) {
+	return func(o *Source) {
 		if end >= 0 && end <= len(o.Data) {
 			o.End = end
 		}
@@ -56,20 +56,20 @@ func End(end int) Option {
 
 // IsHiddenCenter 截取的方式
 func IsHiddenCenter(mode bool) Option {
-	return func(o *Origin) {
+	return func(o *Source) {
 		o.IsHiddenCenter = mode
 	}
 }
 
 // Symbol 设置需要替换的符号
 func Symbol(symbol rune) Option {
-	return func(o *Origin) {
+	return func(o *Source) {
 		o.Symbol = symbol
 	}
 }
 
 // Hidden 开始隐藏内容
-func (o *Origin) Hidden() string {
+func (o *Source) Hidden() string {
 
 	buf := bytes.Buffer{}
 
