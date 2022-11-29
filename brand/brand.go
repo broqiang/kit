@@ -110,12 +110,12 @@ func (s *Source) Rand() (rs Result) {
 // OrderNumber 创建子订单号
 func (s *Source) OrderNumber(l uint, pres ...string) (orderNumber string) {
 	// 后面随机数的长度
-	subfix := ""
+	suffix := ""
 	if l > 0 {
 		s.length = l
 		s.Seed = []rune(defaultNumber)
 
-		subfix = s.Rand().String()
+		suffix = s.Rand().String()
 	}
 
 	// 根据当前时间的年月日时分秒创建订单的前缀
@@ -126,7 +126,7 @@ func (s *Source) OrderNumber(l uint, pres ...string) (orderNumber string) {
 		prefix = pres[0]
 	}
 
-	orderNumber = strings.Join([]string{prefix, ts, subfix}, "")
+	orderNumber = strings.Join([]string{prefix, ts, suffix}, "")
 
 	return
 }
